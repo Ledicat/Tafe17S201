@@ -82,6 +82,7 @@ namespace StartFinance.Views
                     conn.Insert(new ShoppingList
                     {
                         ItemName = _ItemName.Text.ToString(),
+                        ShoppingDate = ShoppingDate.Text.ToString(),
                         Money = TempMoney
                     });
                     // Creating table
@@ -141,9 +142,13 @@ namespace StartFinance.Views
         {
             try
             {
-                string AccSelectionName = ((ShoppingList)ShoppingListView.SelectedItem).ItemName;
-                double AccSelectionMoney = ((ShoppingList)ShoppingListView.SelectedItem).Money;
-                if (AccSelectionName == "")
+                string ItemName = ((ShoppingList)ShoppingListView.SelectedItem).ItemName;
+                string name = _ItemName.Text;
+                string price = MoneyIn.Text;
+                string date = ShoppingDate.Text;
+                double PriceText = ((ShoppingList)ShoppingListView.SelectedItem).Money;
+                string ShoppingDateText = ((ShoppingList) ShoppingListView.SelectedItem).ShoppingDate;
+                if (ItemName == null)
                 {
                     MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
                     await dialog.ShowAsync();
@@ -152,7 +157,7 @@ namespace StartFinance.Views
                 {
                     conn.CreateTable<ShoppingList>();
                     var query1 = conn.Table<ShoppingList>();
-                    var query3 = conn.Query<ShoppingList>("UPDATE ShoppingList SET (ItemName, Money) = ('" + AccSelectionName + "','" + AccSelectionMoney + "') WHERE ItemName ='" + AccSelectionName + "'");//Needs fixing
+                    var query3 = conn.Query<ShoppingList>("UPDATE ShoppingList SET Money = "+price+", ShoppingDate = '"+date+"', ItemName = '"+name+"' WHERE ItemName = '"+ItemName+"'");
                     ShoppingListView.ItemsSource = query1.ToList();
                 }
             }

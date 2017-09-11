@@ -33,6 +33,9 @@ namespace StartFinance.Models
         [Unique]
         public string ItemName { get; set; }
 
+        [Unique]
+        public string ShoppingDate { get; set; }
+
         [NotNull]
         public double Money { get; set; }
     }
