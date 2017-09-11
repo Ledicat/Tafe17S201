@@ -27,7 +27,14 @@ namespace StartFinance.Models
 {
     public class ContactDetails
     {
-      
+      [PrimaryKey, AutoIncrement]
+        public int ContactID { get; set; }
+        [NotNull]
+        public string FirstName { get; set; }
 
+        [NotNull]
+        public string LastName { get; set; }
+        [NotNull]
+        public int Phone { get; set; }
     }
 }
