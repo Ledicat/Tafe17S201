@@ -43,95 +43,119 @@ namespace StartFinance.Views
     /// </summary>
     public sealed partial class PersonalDetailsPage : Page
     {
-        //    SQLiteConnection conn; // adding an SQLite connection
-        //    string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
+            SQLiteConnection conn; // adding an SQLite connection
+            string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
 
         public PersonalDetailsPage()
         {
             this.InitializeComponent();
-            //        NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-            //        /// Initializing a database
-            //        conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
-            //        // Creating table
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            /// Initializing a database
+            conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
+            // Creating table
             Results();
         }
 
         public void Results()
         {
-            //conn.CreateTable<WishList>();
-            //var query1 = conn.Table<WishList>();
-            //WishListView.ItemsSource = query1.ToList();
+            conn.CreateTable<PersonalDetails>();
+            var query1 = conn.Table<PersonalDetails>();
+            PersonalDetailsView.ItemsSource = query1.ToList();
         }
 
-        //    private async void AddWish_Click(object sender, RoutedEventArgs e)
-        //    {
-        //        try
-        //        {
-        //            if (_Wishname.Text.ToString() == "")
-        //            {
-        //                MessageDialog dialog = new MessageDialog("No value entered", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else
-        //            {
-        //                double TempMoney = Convert.ToDouble(MoneyIn.Text);
-        //                conn.CreateTable<WishList>();
-        //                conn.Insert(new WishList
-        //                {
-        //                    WishName = _Wishname.Text.ToString(),
-        //                    Money = TempMoney
-        //                });
-        //                // Creating table
-        //                Results();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (ex is FormatException)
-        //            {
-        //                MessageDialog dialog = new MessageDialog("You forgot to enter the Amount or entered an invalid Amount", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else if (ex is SQLiteException)
-        //            {
-        //                MessageDialog dialog = new MessageDialog("Wish Name already exist, Try Different Name", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else
-        //            {
-        //                /// no idea
-        //            }
-        //        }
-        //    }
+        private async void AddPersonalDetails_Click(object sender, RoutedEventArgs e)
+        {
+            try
+                {
+                     //Data Validation
+                    if (_FirstName.Text.ToString() == "")
+                    {
+                        MessageDialog dialog = new MessageDialog("No first name entered", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else if (_LastName.Text.ToString() == "")
+                    {
+                        MessageDialog dialog = new MessageDialog("No last name entered", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else if (_DateOfBirth.ToString() == "")
+                    {
+                        MessageDialog dialog = new MessageDialog("No date of birth entered", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else if (_Gender.SelectedValue.ToString() == "")
+                    {
+                        MessageDialog dialog = new MessageDialog("No gender entered", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else if (_EmailAddress.Text.ToString() == "")
+                    {
+                        MessageDialog dialog = new MessageDialog("No email entered", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
 
-        //    private async void DeleteItem_Click(object sender, RoutedEventArgs e)
-        //    {
-        //        try
-        //        {
-        //            string AccSelection = ((WishList)WishListView.SelectedItem).WishName;
-        //            if (AccSelection == "")
-        //            {
-        //                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else
-        //            {
-        //                conn.CreateTable<WishList>();
-        //                var query1 = conn.Table<WishList>();
-        //                var query3 = conn.Query<WishList>("DELETE FROM WishList WHERE WishName ='" + AccSelection + "'");
-        //                WishListView.ItemsSource = query1.ToList();
-        //            }
-        //        }
-        //        catch (NullReferenceException)
-        //        {
-        //            MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
-        //            await dialog.ShowAsync();
-        //        }
-        //    }
+
+
+                else
+                {
+                   
+                    conn.CreateTable<PersonalDetails>();
+                    conn.Insert(new PersonalDetails
+                    {
+                        FirstName = _FirstName.Text.ToString(),
+                    });
+                    // Creating table
+                    Results();
+                }
+            }
+                catch (Exception ex)
+                {
+                    if (ex is FormatException)
+                   {
+                        MessageDialog dialog = new MessageDialog("You forgot to enter the Amount or entered an invalid Amount", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                else if (ex is SQLiteException)
+                {
+                    MessageDialog dialog = new MessageDialog("Wish Name already exist, Try Different Name", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    /// no idea
+                }
+            }
+        }
+
+            private async void DeleteItem_Click(object sender, RoutedEventArgs e)
+            {
+            try
+            {
+                string AccSelection = ((WishList)PersonalDetailsView.SelectedItem).WishName;
+                if (AccSelection == "")
+                {
+                    MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    conn.CreateTable<WishList>();
+                    var query1 = conn.Table<WishList>();
+                    var query3 = conn.Query<WishList>("DELETE FROM WishList WHERE WishName ='" + AccSelection + "'");
+                    PersonalDetailsView.ItemsSource = query1.ToList();
+                }
+            }
+            catch (NullReferenceException)
+                {
+                    MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+            }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Results();
         }
+
     }
 }
