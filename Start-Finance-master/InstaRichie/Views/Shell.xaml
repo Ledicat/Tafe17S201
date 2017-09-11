@@ -25,7 +25,31 @@
                                Text="DashBoard" />
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
-            
+
+            <!--  Personal Details button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:PersonalDetailsPage" 
+                                          AutomationProperties.Name="Jerry"
+                                          >
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                		Symbol="ContactInfo" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Personal Details" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+
+            <!--  Contact Details button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:ContactDetailsPage" 
+                                          AutomationProperties.Name="Jerry"
+                                          >
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                		Symbol="PostUpdate" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Contact Details" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+
             <!--  Transaction List button  -->
             <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:TransactionListPage" 
                                           AutomationProperties.Name="Jerry"
@@ -86,6 +110,17 @@
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
 
+            <!--  Shopping List button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:ShoppingListPage" 
+                                          AutomationProperties.Name="Jerry"
+                                          >
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                		Symbol="List" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Shopping List" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
 
             <!--  Wish List button  -->
             <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:WishListPage" 
@@ -98,6 +133,8 @@
                                Text="WishList" />
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
+            
+            
         </Controls:HamburgerMenu.PrimaryButtons>
 
         <Controls:HamburgerMenu.SecondaryButtons>

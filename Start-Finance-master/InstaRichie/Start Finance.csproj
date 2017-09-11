@@ -11,8 +11,8 @@
     <AssemblyName>StartFinance</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
@@ -22,7 +22,7 @@
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>A52F8681A6E0E5BAD5D9589551412C505332EF9F</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>2A2DB2F98F592ADDFE63DF546A830ADFF859EF3A</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -105,7 +105,10 @@
     <Compile Include="Models\Accounts.cs" />
     <Compile Include="Models\Assets.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\ContactDetails.cs" />
     <Compile Include="Models\Debt.cs" />
+    <Compile Include="Models\PersonalDetails.cs" />
+    <Compile Include="Models\ShoppingList.cs" />
     <Compile Include="Models\Transactions.cs" />
     <Compile Include="Models\WishList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -149,6 +152,15 @@
     </Compile>
     <Compile Include="Views\TransactionPage.xaml.cs">
       <DependentUpon>TransactionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShoppingListPage.xaml.cs">
+      <DependentUpon>ShoppingListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PersonalDetailsPage.xaml.cs">
+      <DependentUpon>PersonalDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ContactDetailsPage.xaml.cs">
+      <DependentUpon>ContactDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WishListPage.xaml.cs">
       <DependentUpon>WishListPage.xaml</DependentUpon>
@@ -229,6 +241,18 @@
     <Page Include="Views\TransactionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShoppingListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PersonalDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ContactDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\WishListPage.xaml">
       <SubType>Designer</SubType>
