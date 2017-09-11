@@ -36,7 +36,7 @@
         <DataTemplate x:Key="PersonalDetailsDataViews">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding FirstName}" Padding="0,0,15,0"/>
+                    <TextBlock Name="dataViewFirstName" Text="{Binding FirstName}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding LastName}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding DateOfBirth}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding Gender}" Padding="0,0,15,0"/>
@@ -135,7 +135,7 @@
                     <ListView x:Name="PersonalDetailsView"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
-                              ItemTemplate="{StaticResource PersonalDetailsDataViews}" Margin="0,378,0,0" RenderTransformOrigin="0.5,0.5">
+                              ItemTemplate="{StaticResource PersonalDetailsDataViews}" Margin="0,378,0,0" RenderTransformOrigin="0.5,0.5" SelectionChanged="PersonalDetailsView_SelectionChanged">
                         <RelativePanel.Below>pageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>

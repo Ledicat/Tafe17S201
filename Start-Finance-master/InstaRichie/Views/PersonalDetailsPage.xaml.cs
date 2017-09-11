@@ -34,6 +34,7 @@ using StartFinance.Models;
 using Windows.UI.Popups;
 using SQLite.Net;
 
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace StartFinance.Views
@@ -116,6 +117,7 @@ namespace StartFinance.Views
                     });
                     // Creating table
                     Results();
+                    ResetFields();
                 }
             }
             catch (Exception ex)
@@ -148,6 +150,7 @@ namespace StartFinance.Views
                     var query1 = conn.Table<PersonalDetails>();
                     var query3 = conn.Query<PersonalDetails>("DELETE FROM PersonalDetails WHERE FirstName ='" + AccSelection + "'");
                     PersonalDetailsView.ItemsSource = query1.ToList();
+                    ResetFields();
                 }
             }
             catch (NullReferenceException)
@@ -162,9 +165,66 @@ namespace StartFinance.Views
             Results();
         }
 
-        private void EditPersonalDetails_Click(object sender, RoutedEventArgs e)
+        private async void EditPersonalDetails_Click(object sender, RoutedEventArgs e)
         {
-           
+            try
+            {
+                string AccSelectionFirst = ((PersonalDetails)PersonalDetailsView.SelectedItem).FirstName;
+                string AccSelectionLast = ((PersonalDetails)PersonalDetailsView.SelectedItem).LastName;
+                string AccSelectionPh = ((PersonalDetails)PersonalDetailsView.SelectedItem).Phone;
+                if (AccSelectionFirst == "" || AccSelectionLast == "" || AccSelectionPh == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No Item is selected", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+
+                    conn.CreateTable<PersonalDetails>();
+                    var query1 = conn.Table<PersonalDetails>();
+                    var query3 = conn.Query<PersonalDetails>("UPDATE PersonalDetails SET FirstName = ?, LastName = ?, DateOfBirth = ?, Gender = ?, Email = ?, Phone = ? WHERE FirstName ='" + AccSelectionFirst + "' AND LastName ='" + AccSelectionLast + "' AND Phone ='" + AccSelectionPh + "'", _FirstName.Text.ToString(), _LastName.Text.ToString(), _DateOfBirth.Date.ToString("d"), _Gender.SelectedValue.ToString(), _EmailAddress.Text.ToString(), _PhoneNo.Text.ToString());
+                    PersonalDetailsView.ItemsSource = query1.ToList();
+
+                    ResetFields();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageDialog dialog = new MessageDialog("No Item is selected", "Oops..!");
+                await dialog.ShowAsync();
+            }
+        }
+
+        private void ResetFields()
+        {
+            //Reset fields
+            _FirstName.Text = string.Empty;
+            _LastName.Text = string.Empty;
+            _DateOfBirth.Date = DateTime.Now;
+            _Gender.SelectedValue = -1;
+            _EmailAddress.Text = string.Empty;
+            _PhoneNo.Text = string.Empty;
+        }
+
+
+        private void PersonalDetailsView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                _FirstName.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).FirstName;
+                _LastName.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).LastName;
+                string dob = ((PersonalDetails)PersonalDetailsView.SelectedItem).DateOfBirth;
+                _DateOfBirth.Date = DateTime.Parse(dob);
+                _Gender.SelectedValue = ((PersonalDetails)PersonalDetailsView.SelectedItem).Gender;
+                _EmailAddress.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).Email;
+                _PhoneNo.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).Phone;
+            }
+            catch (NullReferenceException)
+            {
+                //This is an expected exception - it's because the list is briefly null as it refreshes.
+                //MessageDialog dialog = new MessageDialog("List Updated", "Okay!");
+                //await dialog.ShowAsync();
+            }
         }
     }
 }
