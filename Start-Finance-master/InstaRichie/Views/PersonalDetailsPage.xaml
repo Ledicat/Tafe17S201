@@ -36,8 +36,12 @@
         <DataTemplate x:Key="PersonalDetailsDataViews">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding WishName}" Padding="0,0,15,0"/>
-                    <TextBlock Text="{Binding Money}"/>
+                    <TextBlock Text="{Binding FirstName}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding LastName}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding DateOfBirth}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding Gender}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding Email}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding Phone}" Padding="0,0,15,0"/>                    
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -99,6 +103,7 @@
             <!--primary commands-->
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Icon="Add" Label="Add Personal Info" Click="AddPersonalDetails_Click"/>
+                <AppBarButton Icon="Edit" Label="Edit Personal Info" Click="EditPersonalDetails_Click"/>
                 <AppBarButton Icon="Delete" Label="Delete WishList" Click="DeleteItem_Click"/>
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
@@ -107,7 +112,7 @@
         <Pivot>
             <RelativePanel.Below>pageHeader</RelativePanel.Below>
             <RelativePanel.Above>pageFooter</RelativePanel.Above>
-            <PivotItem Header="Add Personal Info">
+            <PivotItem Header="Add Personal Info" Margin="12,0,12,125">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="487"/>
@@ -127,10 +132,10 @@
                         <TextBox x:Name="_EmailAddress" PlaceholderText="kai@notmail.com" Header="Email Address"/>
                         <TextBox x:Name="_PhoneNo" PlaceholderText="0400 086 861" Header="Phone Number"/>
                     </StackPanel>
-                    <ListView x:Name="PersonalDetailsView" Grid.Row="1"
+                    <ListView x:Name="PersonalDetailsView"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
-                              ItemTemplate="{StaticResource PersonalDetailsDataViews}">
+                              ItemTemplate="{StaticResource PersonalDetailsDataViews}" Margin="0,378,0,0" RenderTransformOrigin="0.5,0.5">
                         <RelativePanel.Below>pageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>
