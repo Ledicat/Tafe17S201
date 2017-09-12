@@ -70,14 +70,14 @@ namespace StartFinance.Views
         {
             try
             {
-                if (_ItemName.Text.ToString() == "")
+                if (_ItemName.Text == "" || ItemPrice.Text.ToString() == "" || ShoppingDate.Text == "")
                 {
-                    MessageDialog dialog = new MessageDialog("No value entered", "Oops..!");
+                    MessageDialog dialog = new MessageDialog("All fields are mandatory", "Oops..!");
                     await dialog.ShowAsync();
                 }
                 else
                 {
-                    double TempMoney = Convert.ToDouble(MoneyIn.Text);
+                    double TempMoney = Convert.ToDouble(ItemPrice.Text);
                     conn.CreateTable<ShoppingList>();
                     conn.Insert(new ShoppingList
                     {
@@ -143,28 +143,50 @@ namespace StartFinance.Views
             try
             {
                 string ItemName = ((ShoppingList)ShoppingListView.SelectedItem).ItemName;
-                string name = _ItemName.Text;
-                string price = MoneyIn.Text;
-                string date = ShoppingDate.Text;
                 double PriceText = ((ShoppingList)ShoppingListView.SelectedItem).Money;
-                string ShoppingDateText = ((ShoppingList) ShoppingListView.SelectedItem).ShoppingDate;
-                if (ItemName == null)
+                string ShoppingDateText = ((ShoppingList)ShoppingListView.SelectedItem).ShoppingDate;
+                string name = _ItemName.Text;
+                string price = ItemPrice.Text;
+                string date = ShoppingDate.Text;
+                if (name == "" || price == "" || date == "")
                 {
-                    MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                    MessageDialog dialog = new MessageDialog("All fields are mandatory", "Oops..!");
                     await dialog.ShowAsync();
                 }
                 else
                 {
-                    conn.CreateTable<ShoppingList>();
-                    var query1 = conn.Table<ShoppingList>();
-                    var query3 = conn.Query<ShoppingList>("UPDATE ShoppingList SET Money = "+price+", ShoppingDate = '"+date+"', ItemName = '"+name+"' WHERE ItemName = '"+ItemName+"'");
-                    ShoppingListView.ItemsSource = query1.ToList();
+                    if (ItemName == null)
+                    {
+                        MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else
+                    {
+                        conn.CreateTable<ShoppingList>();
+                        var query1 = conn.Table<ShoppingList>();
+                        var query3 = conn.Query<ShoppingList>("UPDATE ShoppingList SET Money = " + price + ", ShoppingDate = '" + date + "', ItemName = '" + name + "' WHERE ItemName = '" + ItemName + "'");
+                        ShoppingListView.ItemsSource = query1.ToList();
+                    }
                 }
             }
             catch (NullReferenceException)
             {
                 MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
                 await dialog.ShowAsync();
+            }
+        }
+
+        private void ShoppingListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                _ItemName.Text = ((ShoppingList)ShoppingListView.SelectedItem).ItemName;
+                ItemPrice.Text = ((ShoppingList)ShoppingListView.SelectedItem).Money.ToString();
+                ShoppingDate.Text = ((ShoppingList)ShoppingListView.SelectedItem).ShoppingDate;
+            }
+            catch (Exception)
+            {
+
             }
         }
     }

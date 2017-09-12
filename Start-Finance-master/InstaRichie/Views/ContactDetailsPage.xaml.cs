@@ -74,7 +74,7 @@ namespace StartFinance.Views
         //            }
         //            else
         //            {
-        //                double TempMoney = Convert.ToDouble(MoneyIn.Text);
+        //                double TempMoney = Convert.ToDouble(ItemPrice.Text);
         //                conn.CreateTable<WishList>();
         //                conn.Insert(new WishList
         //                {

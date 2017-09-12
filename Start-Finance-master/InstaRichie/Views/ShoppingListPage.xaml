@@ -38,8 +38,8 @@
             <Grid>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding ItemName}" Padding="0,0,15,0"/>
-                    <TextBlock Text="{Binding Money}"/>
-                    
+                    <TextBlock Text="{Binding Money}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding ShoppingDate}" Padding="0,0,15,0"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -120,13 +120,13 @@
                                 Orientation="Vertical" VerticalAlignment="Stretch"
                                 HorizontalAlignment="Stretch" Margin="0,0,0,305" Grid.RowSpan="2">
                         <TextBox x:Name="_ItemName" PlaceholderText="iPhone 7, Galaxy S8, Pixel XL" Header="Description"/>
-                        <TextBox x:Name="MoneyIn" Header="Amount" PlaceholderText="1000.00" TextWrapping="Wrap" InputScope="Number"/>
+                        <TextBox x:Name="ItemPrice" Header="Amount" PlaceholderText="1000.00" TextWrapping="Wrap" InputScope="Number"/>
                         <TextBox x:Name="ShoppingDate" Header="Shopping Date" PlaceholderText="00/00/00" TextWrapping="Wrap" InputScope="Number"/>
                     </StackPanel>
                     <ListView x:Name="ShoppingListView" Grid.Row="1"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
-                              ItemTemplate="{StaticResource ShoppingListDataViews}" Margin="0,41,0,0">
+                              ItemTemplate="{StaticResource ShoppingListDataViews}" Margin="0,41,0,0" SelectionChanged="ShoppingListView_SelectionChanged">
                         <RelativePanel.Below>pageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>
