@@ -34,6 +34,7 @@ using StartFinance.Models;
 using Windows.UI.Popups;
 using SQLite.Net;
 
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace StartFinance.Views
@@ -43,95 +44,181 @@ namespace StartFinance.Views
     /// </summary>
     public sealed partial class PersonalDetailsPage : Page
     {
-        //    SQLiteConnection conn; // adding an SQLite connection
-        //    string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
+        SQLiteConnection conn; // adding an SQLite connection
+        string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
 
         public PersonalDetailsPage()
         {
             this.InitializeComponent();
-            //        NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-            //        /// Initializing a database
-            //        conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
-            //        // Creating table
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            /// Initializing a database
+            conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
+            // Creating table
             Results();
         }
 
         public void Results()
         {
-            //conn.CreateTable<WishList>();
-            //var query1 = conn.Table<WishList>();
-            //WishListView.ItemsSource = query1.ToList();
+            conn.CreateTable<PersonalDetails>();
+            var query1 = conn.Table<PersonalDetails>();
+            PersonalDetailsView.ItemsSource = query1.ToList();
         }
 
-        //    private async void AddWish_Click(object sender, RoutedEventArgs e)
-        //    {
-        //        try
-        //        {
-        //            if (_Wishname.Text.ToString() == "")
-        //            {
-        //                MessageDialog dialog = new MessageDialog("No value entered", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else
-        //            {
-        //                double TempMoney = Convert.ToDouble(MoneyIn.Text);
-        //                conn.CreateTable<WishList>();
-        //                conn.Insert(new WishList
-        //                {
-        //                    WishName = _Wishname.Text.ToString(),
-        //                    Money = TempMoney
-        //                });
-        //                // Creating table
-        //                Results();
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (ex is FormatException)
-        //            {
-        //                MessageDialog dialog = new MessageDialog("You forgot to enter the Amount or entered an invalid Amount", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else if (ex is SQLiteException)
-        //            {
-        //                MessageDialog dialog = new MessageDialog("Wish Name already exist, Try Different Name", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else
-        //            {
-        //                /// no idea
-        //            }
-        //        }
-        //    }
+        private async void AddPersonalDetails_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Data Validation
+                if (_FirstName.Text.ToString() == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No first name entered", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else if (_LastName.Text.ToString() == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No last name entered", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else if (_DateOfBirth.ToString() == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No date of birth entered", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else if (_Gender.SelectedIndex == -1)
+                {
+                    MessageDialog dialog = new MessageDialog("No gender entered", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else if (_EmailAddress.Text.ToString() == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No email entered", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else if (_PhoneNo.Text.ToString() == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No phone number entered", "Oops..!");
+                    await dialog.ShowAsync();
+                }
 
-        //    private async void DeleteItem_Click(object sender, RoutedEventArgs e)
-        //    {
-        //        try
-        //        {
-        //            string AccSelection = ((WishList)WishListView.SelectedItem).WishName;
-        //            if (AccSelection == "")
-        //            {
-        //                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
-        //                await dialog.ShowAsync();
-        //            }
-        //            else
-        //            {
-        //                conn.CreateTable<WishList>();
-        //                var query1 = conn.Table<WishList>();
-        //                var query3 = conn.Query<WishList>("DELETE FROM WishList WHERE WishName ='" + AccSelection + "'");
-        //                WishListView.ItemsSource = query1.ToList();
-        //            }
-        //        }
-        //        catch (NullReferenceException)
-        //        {
-        //            MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
-        //            await dialog.ShowAsync();
-        //        }
-        //    }
+                //Validation of Email and Phone number is not required, KT says.
+
+                else
+                {
+                    
+                    conn.CreateTable<PersonalDetails>();
+                    conn.Insert(new PersonalDetails
+                    {
+                        FirstName = _FirstName.Text.ToString(),
+                        LastName = _LastName.Text.ToString(),
+                        DateOfBirth = _DateOfBirth.Date.ToString("d"),
+                        Gender = _Gender.SelectedValue.ToString(),
+                        Email = _EmailAddress.Text.ToString(),
+                        Phone = _PhoneNo.Text.ToString()
+                    });
+                    // Creating table
+                    Results();
+                    ResetFields();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is FormatException)
+                {
+                    MessageDialog dialog = new MessageDialog("Format Exception has Occured! ", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    /// no idea
+                }
+            }
+        }
+
+        private async void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string AccSelection = ((PersonalDetails)PersonalDetailsView.SelectedItem).FirstName;
+                if (AccSelection == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No Item is selected", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    conn.CreateTable<PersonalDetails>();
+                    var query1 = conn.Table<PersonalDetails>();
+                    var query3 = conn.Query<PersonalDetails>("DELETE FROM PersonalDetails WHERE FirstName ='" + AccSelection + "'");
+                    PersonalDetailsView.ItemsSource = query1.ToList();
+                    ResetFields();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageDialog dialog = new MessageDialog("No Item is selected", "Oops..!");
+                await dialog.ShowAsync();
+            }
+        }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Results();
+        }
+
+        private async void EditPersonalDetails_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string AccSelectionFirst = ((PersonalDetails)PersonalDetailsView.SelectedItem).FirstName;
+                string AccSelectionLast = ((PersonalDetails)PersonalDetailsView.SelectedItem).LastName;
+                string AccSelectionPh = ((PersonalDetails)PersonalDetailsView.SelectedItem).Phone;
+                if (AccSelectionFirst == "" || AccSelectionLast == "" || AccSelectionPh == "")
+                {
+                    MessageDialog dialog = new MessageDialog("No Item is selected", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+
+                    conn.CreateTable<PersonalDetails>();
+                    var query1 = conn.Table<PersonalDetails>();
+                    var query3 = conn.Query<PersonalDetails>("UPDATE PersonalDetails SET FirstName = ?, LastName = ?, DateOfBirth = ?, Gender = ?, Email = ?, Phone = ? WHERE FirstName ='" + AccSelectionFirst + "' AND LastName ='" + AccSelectionLast + "' AND Phone ='" + AccSelectionPh + "'", _FirstName.Text.ToString(), _LastName.Text.ToString(), _DateOfBirth.Date.ToString("d"), _Gender.SelectedValue.ToString(), _EmailAddress.Text.ToString(), _PhoneNo.Text.ToString());
+                    PersonalDetailsView.ItemsSource = query1.ToList();
+
+                    ResetFields();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageDialog dialog = new MessageDialog("No Item is selected", "Oops..!");
+                await dialog.ShowAsync();
+            }
+        }
+
+        private void ResetFields()
+        {
+            //Reset fields
+            _FirstName.Text = string.Empty;
+            _LastName.Text = string.Empty;
+            _DateOfBirth.Date = DateTime.Now;
+            _Gender.SelectedValue = -1;
+            _EmailAddress.Text = string.Empty;
+            _PhoneNo.Text = string.Empty;
+        }
+
+
+        private void PersonalDetailsView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(PersonalDetailsView.SelectedItem != null)
+            {
+                _FirstName.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).FirstName;
+                _LastName.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).LastName;
+                string dob = ((PersonalDetails)PersonalDetailsView.SelectedItem).DateOfBirth;
+                _DateOfBirth.Date = DateTime.Parse(dob);
+                _Gender.SelectedValue = ((PersonalDetails)PersonalDetailsView.SelectedItem).Gender;
+                _EmailAddress.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).Email;
+                _PhoneNo.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).Phone;
+            }
         }
     }
 }

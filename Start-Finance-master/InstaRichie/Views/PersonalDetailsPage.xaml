@@ -32,18 +32,22 @@
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <!--<Page.Resources>
+    <Page.Resources>
         <DataTemplate x:Key="PersonalDetailsDataViews">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding WishName}" Padding="0,0,15,0"/>
-                    <TextBlock Text="{Binding Money}"/>
+                    <TextBlock Name="dataViewFirstName" Text="{Binding FirstName}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding LastName}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding DateOfBirth}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding Gender}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding Email}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding Phone}" Padding="0,0,15,0"/>                    
                 </StackPanel>
             </Grid>
         </DataTemplate>
-    </Page.Resources>-->
+    </Page.Resources>
 
-    <!--<RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
@@ -52,9 +56,9 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        --><!--  TODO: change properties for narrow view  -->
-                        <!--<Setter Target="stateTextBox.Text" Value="Narrow Visual State" />--><!--
-                        <Setter Target="WishListView.(RelativePanel.Below)" Value="pageStart"/>
+                        <!--TODO: change properties for narrow view-->
+                        <!--<Setter Target="stateTextBox.Text" Value="Narrow Visual State" />-->
+                        <!--<Setter Target="PersonalDetails.(RelativePanel.Below)" Value="pageStart"/>-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateNormal">
@@ -62,8 +66,8 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        --><!--  TODO: change properties for normal view  -->
-                        <!--<Setter Target="stateTextBox.Text" Value="Normal Visual State" />--><!--
+                        <!--TODO: change properties for normal view-->
+                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />
                         <Setter Target="WishListView.(RelativePanel.Below)" Value="pageStart"/>
                     </VisualState.Setters>
                 </VisualState>
@@ -72,9 +76,9 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        --><!--  TODO: change properties for wide view  -->
-                        <!--<Setter Target="stateTextBox.Text" Value="Wide Visual State" />--><!--
-                        <Setter Target="WishListView.(RelativePanel.Below)" Value="pageStart"/>
+                        <!--TODO: change properties for wide view-->
+                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />
+                        <Setter Target="PersonalDetailsView.(RelativePanel.Below)" Value="pageStart"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -84,7 +88,7 @@
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" Text="Wish List">
 
-            --><!--  secondary commands  --><!--
+            <!--secondary commands-->
             <controls:PageHeader.SecondaryCommands>
                 <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
                 <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
@@ -96,37 +100,46 @@
         <controls:PageHeader x:Name="pageFooter" RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignBottomWithPanel="True">
-            --><!--primary commands--><!--
+            <!--primary commands-->
             <controls:PageHeader.PrimaryCommands>
-                <AppBarButton Icon="Add" Label="Add WishList" Click="AddWish_Click"/>
+                <AppBarButton Icon="Add" Label="Add Personal Info" Click="AddPersonalDetails_Click"/>
+                <AppBarButton Icon="Edit" Label="Edit Personal Info" Click="EditPersonalDetails_Click"/>
                 <AppBarButton Icon="Delete" Label="Delete WishList" Click="DeleteItem_Click"/>
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
 
-        --><!--Page Conetents start here--><!--
+        <!--Page Conetents start here-->
         <Pivot>
             <RelativePanel.Below>pageHeader</RelativePanel.Below>
             <RelativePanel.Above>pageFooter</RelativePanel.Above>
-            <PivotItem Header="Add WishList">
+            <PivotItem Header="Add Personal Info" Margin="12,0,12,125">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="150"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="487"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0"
                             Orientation="Vertical" VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch">
-                        <TextBox x:Name="_Wishname" PlaceholderText="Lumia Phone" Header="Description"/>
-                        <TextBox x:Name="MoneyIn" Header="Amount" PlaceholderText="1000.00" TextWrapping="Wrap" InputScope="Number"/>
+                            HorizontalAlignment="Stretch" Margin="0,0,0,1">
+                        <TextBox x:Name="_FirstName" PlaceholderText="Kai" Header="First Name"/>
+                        <TextBox x:Name="_LastName" PlaceholderText="Ishikawa" Header="Last Name"/>
+                        <DatePicker x:Name="_DateOfBirth" HorizontalAlignment="Center" Header="Date of Birth" />
+                        <ComboBox x:Name="_Gender" HorizontalAlignment="Center" Header="Gender" PlaceholderText="Gender">
+                            <x:String>Male</x:String>
+                            <x:String>Female</x:String>
+                            <x:String>Other</x:String>
+                        </ComboBox>
+                        <TextBox x:Name="_EmailAddress" PlaceholderText="kai@notmail.com" Header="Email Address"/>
+                        <TextBox x:Name="_PhoneNo" PlaceholderText="0400 086 861" Header="Phone Number"/>
                     </StackPanel>
-                    <ListView x:Name="WishListView" Grid.Row="1"
+                    <ListView x:Name="PersonalDetailsView"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
-                              ItemTemplate="{StaticResource WishListDataViews}">
+                              ItemTemplate="{StaticResource PersonalDetailsDataViews}" Margin="0,378,0,0" RenderTransformOrigin="0.5,0.5" SelectionChanged="PersonalDetailsView_SelectionChanged">
                         <RelativePanel.Below>pageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>
             </PivotItem>
         </Pivot>
-    </RelativePanel>-->
+    </RelativePanel>
 </Page>
