@@ -33,7 +33,6 @@
         <DataTemplate x:Key="TransListView">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ContactID}" />
                     <TextBlock Text="{Binding FirstName}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding LastName}" Padding="0,0,15,0"/>
                     <TextBlock Text="{Binding Phone}" Padding="0,0,15,0"/>
@@ -95,6 +94,7 @@
 
             <!--  secondary commands  -->
             <controls:PageHeader.PrimaryCommands>
+                <AppBarButton Icon="Edit" Label="Edit Contact Details" Click="AppBarButton_Click_1" />
                 <AppBarButton Icon="Add" Label="Add Account" Click="AppBarButton_Click" />
                 <AppBarButton Icon="Delete" Label="Delete Account" Click="DeleteItem_Click" />
             </controls:PageHeader.PrimaryCommands>

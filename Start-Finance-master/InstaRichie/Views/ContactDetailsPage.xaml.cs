@@ -63,7 +63,7 @@ namespace StartFinance.Views
             var query = conn.Table<ContactDetails>();
             TransactionList.ItemsSource = query.ToList();
         }
-
+        //ADD Button
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -122,7 +122,7 @@ namespace StartFinance.Views
         {
             Results();
         }
-
+        //Delete Button
         private async void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
             MessageDialog ShowConf = new MessageDialog
@@ -157,6 +157,46 @@ namespace StartFinance.Views
             else
             {
                 //
+            }
+        }
+        //Edit Button
+        private async void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string FName = FNameText.Text;
+                string LName = LNameText.Text;
+                string Ph = PhoneText.Text;
+
+                string FirstName = ((ContactDetails)TransactionList.SelectedItem).FirstName;
+                string LastName = ((ContactDetails)TransactionList.SelectedItem).LastName;
+                int Phone = ((ContactDetails)TransactionList.SelectedItem).Phone;
+
+                if (FName == ""|| LName == ""|| Ph == "")
+                {
+                    MessageDialog dialog = new MessageDialog("Select the Contact Details", "Oops...");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    if (FirstName == null || LastName ==null )
+                    {
+                        MessageDialog dialog = new MessageDialog("Not selected the Name", "Oops...");
+                        await dialog.ShowAsync();
+                    }
+                    else
+                    {
+                        conn.CreateTable<ContactDetails>();
+                        var query1 = conn.Table<ContactDetails>();
+                        var query2 = conn.Query<ContactDetails>("UPDATE ContactDetails SET Phone = " + Ph + ",LastName ='" + LName + "',FirstName='" + FName + "' WHERE FirstName ='" + FirstName + "'");
+                        TransactionList.ItemsSource = query1.ToList();
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                await dialog.ShowAsync();
             }
         }
     }
