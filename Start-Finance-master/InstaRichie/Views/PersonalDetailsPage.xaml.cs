@@ -209,7 +209,7 @@ namespace StartFinance.Views
 
         private void PersonalDetailsView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            if(PersonalDetailsView.SelectedItem != null)
             {
                 _FirstName.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).FirstName;
                 _LastName.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).LastName;
@@ -218,12 +218,6 @@ namespace StartFinance.Views
                 _Gender.SelectedValue = ((PersonalDetails)PersonalDetailsView.SelectedItem).Gender;
                 _EmailAddress.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).Email;
                 _PhoneNo.Text = ((PersonalDetails)PersonalDetailsView.SelectedItem).Phone;
-            }
-            catch (NullReferenceException)
-            {
-                //This is an expected exception - it's because the list is briefly null as it refreshes.
-                //MessageDialog dialog = new MessageDialog("List Updated", "Okay!");
-                //await dialog.ShowAsync();
             }
         }
     }
