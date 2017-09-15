@@ -27,7 +27,16 @@ namespace StartFinance.Models
 {
     public class ShoppingList
     {
-        
+        [PrimaryKey, AutoIncrement]
+        public int ID { get; set; }
 
+        [Unique]
+        public string ItemName { get; set; }
+
+        [NotNull]
+        public string ShoppingDate { get; set; }
+
+        [NotNull]
+        public double Money { get; set; }
     }
 }

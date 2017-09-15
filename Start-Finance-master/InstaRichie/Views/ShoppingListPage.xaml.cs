@@ -15,6 +15,9 @@
 //along with Start Finance.If not, see<http://www.gnu.org/licenses/>.
 // ***************************************************************************
 
+//Author: Salvdor Cardenas Cruz 09/09/2017
+//Shopping Cart feature
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,95 +46,156 @@ namespace StartFinance.Views
     /// </summary>
     public sealed partial class ShoppingListPage : Page
     {
-    //    SQLiteConnection conn; // adding an SQLite connection
-    //    string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
+        SQLiteConnection conn; // adding an SQLite connection
+        string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Findata.sqlite");
 
         public ShoppingListPage()
-       {
+        {
             this.InitializeComponent();
-    //        NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-    //        /// Initializing a database
-    //        conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
-    //        // Creating table
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            // Initializing a database
+            conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
+            // Creating table
             Results();
         }
 
         public void Results()
         {
-    //        conn.CreateTable<WishList>();
-    //        var query1 = conn.Table<WishList>();
-    //        WishListView.ItemsSource = query1.ToList();
+            conn.CreateTable<ShoppingList>();
+            var query1 = conn.Table<ShoppingList>();
+            ShoppingListView.ItemsSource = query1.ToList();
         }
 
-    //    private async void AddWish_Click(object sender, RoutedEventArgs e)
-    //    {
-    //        try
-    //        {
-    //            if (_Wishname.Text.ToString() == "")
-    //            {
-    //                MessageDialog dialog = new MessageDialog("No value entered", "Oops..!");
-    //                await dialog.ShowAsync();
-    //            }
-    //            else
-    //            {
-    //                double TempMoney = Convert.ToDouble(MoneyIn.Text);
-    //                conn.CreateTable<WishList>();
-    //                conn.Insert(new WishList
-    //                {
-    //                    WishName = _Wishname.Text.ToString(),
-    //                    Money = TempMoney
-    //                });
-    //                // Creating table
-    //                Results();
-    //            }
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            if (ex is FormatException)
-    //            {
-    //                MessageDialog dialog = new MessageDialog("You forgot to enter the Amount or entered an invalid Amount", "Oops..!");
-    //                await dialog.ShowAsync();
-    //            }
-    //            else if (ex is SQLiteException)
-    //            {
-    //                MessageDialog dialog = new MessageDialog("Wish Name already exist, Try Different Name", "Oops..!");
-    //                await dialog.ShowAsync();
-    //            }
-    //            else
-    //            {
-    //                /// no idea
-    //            }
-    //        }
-    //    }
+        private async void AddItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_ItemName.Text == "" || ItemPrice.Text.ToString() == "" || ShoppingDate.Text == "")
+                {
+                    MessageDialog dialog = new MessageDialog("All fields are mandatory", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    double TempMoney = Convert.ToDouble(ItemPrice.Text);
+                    conn.CreateTable<ShoppingList>();
+                    conn.Insert(new ShoppingList
+                    {
+                        ItemName = _ItemName.Text.ToString(),
+                        ShoppingDate = ShoppingDate.Text.ToString(),
+                        Money = TempMoney
+                    });
+                    ClearFields();
+                    // Creating table
+                    Results();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is FormatException)
+                {
+                    MessageDialog dialog = new MessageDialog("You forgot to enter the Amount or entered an invalid Amount", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else if (ex is SQLiteException)
+                {
+                    MessageDialog dialog = new MessageDialog("Item Name already exist, Try Different Name", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    /// no idea
+                }
+            }
+        }
 
-    //    private async void DeleteItem_Click(object sender, RoutedEventArgs e)
-    //    {
-    //        try
-    //        {
-    //            string AccSelection = ((WishList)WishListView.SelectedItem).WishName;
-    //            if (AccSelection == "")
-    //            {
-    //                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
-    //                await dialog.ShowAsync();
-    //            }
-    //            else
-    //            {
-    //                conn.CreateTable<WishList>();
-    //                var query1 = conn.Table<WishList>();
-    //                var query3 = conn.Query<WishList>("DELETE FROM WishList WHERE WishName ='" + AccSelection + "'");
-    //                WishListView.ItemsSource = query1.ToList();
-    //            }
-    //        }
-    //        catch (NullReferenceException)
-    //        {
-    //            MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
-    //            await dialog.ShowAsync();
-    //        }
-    //    }
+        public void ClearFields()
+        {
+            _ItemName.Text = "";
+            ItemPrice.Text = "";
+            ShoppingDate.Text = "";            
+        }
 
-           private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string AccSelection = ((ShoppingList)ShoppingListView.SelectedItem).ItemName;
+                if (AccSelection == "")
+                {
+                    MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    conn.CreateTable<ShoppingList>();
+                    var query1 = conn.Table<ShoppingList>();
+                    var query3 = conn.Query<ShoppingList>("DELETE FROM ShoppingList WHERE ItemName ='" + AccSelection + "'");
+                    ShoppingListView.ItemsSource = query1.ToList();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                await dialog.ShowAsync();
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Results();
+        }
+
+        private async void EditItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string ItemName = ((ShoppingList)ShoppingListView.SelectedItem).ItemName;
+                double PriceText = ((ShoppingList)ShoppingListView.SelectedItem).Money;
+                string ShoppingDateText = ((ShoppingList)ShoppingListView.SelectedItem).ShoppingDate;
+                string name = _ItemName.Text;
+                string price = ItemPrice.Text;
+                string date = ShoppingDate.Text;
+                if (name == "" || price == "" || date == "")
+                {
+                    MessageDialog dialog = new MessageDialog("All fields are mandatory", "Oops..!");
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    if (ItemName == null)
+                    {
+                        MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else
+                    {
+                        conn.CreateTable<ShoppingList>();
+                        var query1 = conn.Table<ShoppingList>();
+                        var query3 = conn.Query<ShoppingList>("UPDATE ShoppingList SET Money = " + price + ", ShoppingDate = '" + date + "', ItemName = '" + name + "' WHERE ItemName = '" + ItemName + "'");
+                        ShoppingListView.ItemsSource = query1.ToList();
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                await dialog.ShowAsync();
+            }
+        }
+
+        private void ShoppingListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                _ItemName.Text = ((ShoppingList)ShoppingListView.SelectedItem).ItemName;
+                ItemPrice.Text = ((ShoppingList)ShoppingListView.SelectedItem).Money.ToString();
+                ShoppingDate.Text = ((ShoppingList)ShoppingListView.SelectedItem).ShoppingDate;
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }
