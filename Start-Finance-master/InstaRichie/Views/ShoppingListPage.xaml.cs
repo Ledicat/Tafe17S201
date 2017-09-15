@@ -85,6 +85,7 @@ namespace StartFinance.Views
                         ShoppingDate = ShoppingDate.Text.ToString(),
                         Money = TempMoney
                     });
+                    ClearFields();
                     // Creating table
                     Results();
                 }
@@ -106,6 +107,13 @@ namespace StartFinance.Views
                     /// no idea
                 }
             }
+        }
+
+        public void ClearFields()
+        {
+            _ItemName.Text = "";
+            ItemPrice.Text = "";
+            ShoppingDate.Text = "";            
         }
 
         private async void DeleteItem_Click(object sender, RoutedEventArgs e)
