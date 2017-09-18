@@ -68,7 +68,7 @@
                     <VisualState.Setters>
                         <!--TODO: change properties for normal view-->
                         <Setter Target="stateTextBox.Text" Value="Normal Visual State" />
-                        <Setter Target="WishListView.(RelativePanel.Below)" Value="pageStart"/>
+                        <Setter Target="PersonalDetailsView.(RelativePanel.Below)" Value="pageStart"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">
@@ -86,7 +86,7 @@
 
         <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="Wish List">
+                             RelativePanel.AlignTopWithPanel="True" Text="Add/Change Personal Info">
 
             <!--secondary commands-->
             <controls:PageHeader.SecondaryCommands>
@@ -104,7 +104,7 @@
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Icon="Add" Label="Add Personal Info" Click="AddPersonalDetails_Click"/>
                 <AppBarButton Icon="Edit" Label="Edit Personal Info" Click="EditPersonalDetails_Click"/>
-                <AppBarButton Icon="Delete" Label="Delete WishList" Click="DeleteItem_Click"/>
+                <AppBarButton Icon="Delete" Label="Delete Personal Info" Click="DeleteItem_Click"/>
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
 

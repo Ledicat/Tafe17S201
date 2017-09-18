@@ -35,6 +35,6 @@ namespace StartFinance.Models
         [NotNull]
         public string LastName { get; set; }
         [NotNull]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
     }
 }

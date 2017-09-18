@@ -71,7 +71,7 @@ namespace StartFinance.Views
                 // checks if account name is null
                 if (FNameText.Text.ToString() == ""||LNameText.Text.ToString()==""||PhoneText.Text.ToString()=="")
                 {
-                    MessageDialog dialog = new MessageDialog("All filled must br entred", "Oops..!");
+                    MessageDialog dialog = new MessageDialog("Please check your input (no empties allowed)", "Oops..!");
                     await dialog.ShowAsync();
                 }
                 else if (FNameText.Text.ToString() == "FirstName" || LNameText.Text.ToString() == "SureName"|| PhoneText.Text.ToString()=="Phone")
@@ -84,7 +84,7 @@ namespace StartFinance.Views
                     {
                         FirstName = FNameText.Text,
                         LastName = LNameText.Text,
-                        Phone = int.Parse(PhoneText.Text)
+                        Phone = PhoneText.Text
                     });
                     Results();
                 }
@@ -126,7 +126,7 @@ namespace StartFinance.Views
         private async void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
             MessageDialog ShowConf = new MessageDialog
-                ("Deleting this Account will delete all transactions of this account", "Important");
+                ("Deleting this Entry will delete all information", "Important");
             ShowConf.Commands.Add(new UICommand("Yes, Delete")
             {
                 Id = 0
@@ -170,7 +170,7 @@ namespace StartFinance.Views
 
                 string FirstName = ((ContactDetails)TransactionList.SelectedItem).FirstName;
                 string LastName = ((ContactDetails)TransactionList.SelectedItem).LastName;
-                int Phone = ((ContactDetails)TransactionList.SelectedItem).Phone;
+                string Phone = ((ContactDetails)TransactionList.SelectedItem).Phone;
 
                 if (FName == ""|| LName == ""|| Ph == "")
                 {
@@ -188,7 +188,7 @@ namespace StartFinance.Views
                     {
                         conn.CreateTable<ContactDetails>();
                         var query1 = conn.Table<ContactDetails>();
-                        var query2 = conn.Query<ContactDetails>("UPDATE ContactDetails SET Phone = " + Ph + ",LastName ='" + LName + "',FirstName='" + FName + "' WHERE FirstName ='" + FirstName + "'");
+                        var query2 = conn.Query<ContactDetails>("UPDATE ContactDetails SET Phone = '" + PhoneText.Text + "',LastName ='" + LNameText.Text + "',FirstName='" + FNameText.Text + "' WHERE FirstName ='" + FirstName + "' AND LastName ='" + LastName + "'");
                         TransactionList.ItemsSource = query1.ToList();
                     }
                 }
